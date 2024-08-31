@@ -2,6 +2,7 @@ using RegistroTecnicos.Components;
 using Microsoft.EntityFrameworkCore;
 using RegistroTecnicos.DAL;
 using Microsoft.Extensions.Options;
+using RegistroTecnicos.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ var ConStr = builder.Configuration.GetConnectionString("ConStr");
 
 
 builder.Services.AddDbContext<Context>(Options => Options.UseSqlite(ConStr));
+builder.Services.AddScoped<TecnicoServices>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
