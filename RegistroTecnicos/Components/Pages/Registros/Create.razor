@@ -1,0 +1,38 @@
+﻿@page "/Create"
+@page "/Create/{tecnicoId:int}"
+@inject TecnicoServices tecnicosService
+
+@code {
+    [Parameter]
+    public int? tecnicoId { get; set; }
+    public Tecnicos Tecnico { get; set; } = new Tecnicos();
+    private bool Existe = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (tecnicoId.HasValue)
+        {
+            Tecnico.TecnicoId = tecnicoId.Value;
+            await Buscar();
+        }
+    }
+
+    public async Task Buscar()
+    {
+        var tecnicoE = await tecnicosService.Buscar(Tecnico.TecnicoId);
+
+        if (tecnicoE != null)
+        {
+            Tecnico = tecnicoE;
+        }
+
+    }
+
+    public void Nuevo()
+    {
+        Tecnico = new Tecnicos();
+        Existe = false;
+    }
+
+
+}
