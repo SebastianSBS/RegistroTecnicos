@@ -1,0 +1,121 @@
+﻿@page "/Tecnico/Index"
+
+@inject TecnicoServices tecnicoService;
+@rendermode InteractiveServer
+ 
+<EditForm Model="ListaTecnicos" class="border shadow-lg p-3 rounded">
+    
+    <div class="card-header bg-primary text-white text-center py-2 rounded">
+        <h3 style="font-weight: bold;" class="mb-0 font-weight-bold">Consulta Tecnicos</h3>
+    </div>
+    <div class="card-body">
+
+        <div class="row mb-3 align-items-end">
+            <div class="col-md-3">
+                <label for="Filtro" class="form-label">Filtrar por:</label>
+                <select @bind="filtro" class="form-select">
+                    <option value="id">ID</option>
+                    <option value="nombres">Nombres</option>
+                    <option value="sueldoHora">Sueldo hora</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="ValorFiltro" class="form-label">Búsqueda:</label>
+                <div class="input-group">
+                    <input @bind="valorFiltro" class="form-control" placeholder="Buscar" />
+                    <button @onclick="Buscar" class="btn btn-outline-primary" type="button">
+                        <span class="bi bi-search"></span> Buscar
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-3 text-end">
+                <a href="/Tecnico/Create" class="btn btn-success" type="button"><span class="bi bi-floppy"></span> Crear </a>
+            </div>
+        </div>
+    </div>
+    <table class="table table-bordered text-center">
+        <thead class="bg-primary text-white">
+            <tr>
+                <th>TecnicoId</th>
+                <th>Nombres</th>
+                <th>Sueldo hora</th>
+                <th>Ver</th>
+                <th>Editar</th>
+                <th>Eliminar</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var tecnico in ListaTecnicos)
+            {
+                <tr>
+                    <td>@tecnico.TecnicoId</td>
+                    <td>@tecnico.Nombres</td>
+                    <td>@tecnico.SueldoHora</td>
+                    <td>
+                        <a class="btn btn-outline-primary" href="/Tecnico/Details/@tecnico.TecnicoId">
+                            <span class="bi bi-info-circle-fill"></span>
+                        </a>
+                    </td>
+
+                    <td>
+                        <a class="btn btn-outline-success" href="/Tecnico/Edit/@tecnico.TecnicoId">
+                            <span class="bi bi-marker-tip"></span>
+                        </a>
+                    </td>
+
+                    <td>
+                        <a class="btn btn-outline-warning" href="/Tecnico/Delete/@tecnico.TecnicoId">
+                            <span class="bi bi-dash-circle-fill"></span>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</EditForm>
+
+
+@code {
+
+    public Tecnicos Tecnico = new Tecnicos();
+
+    public List<Tecnicos> ListaTecnicos = new List<Tecnicos>();
+
+    private string filtro = "Id";
+    private string valorFiltro = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaTecnicos = await tecnicoService.Listar (c => true);
+    }
+
+    public async Task Guardar()
+    {
+        var guardo = await tecnicoService.Guardar(Tecnico);
+    }
+
+    private async Task Buscar()
+    {
+        if (valorFiltro.Trim() != "")
+        {
+            if (filtro == "id" && int.TryParse(valorFiltro, out int TecnicoId))
+            {
+                ListaTecnicos = await tecnicoService.Listar(t => t.TecnicoId == TecnicoId);
+            }
+            else if (filtro == "nombres")
+            {
+                ListaTecnicos = await tecnicoService.Listar(t => t.Nombres == valorFiltro);
+            }
+            else if (filtro == "sueldoHora" && int.TryParse(valorFiltro, out int SueldoHora))
+            {
+                ListaTecnicos = await tecnicoService.Listar(t => t.SueldoHora == SueldoHora);
+            }
+        }
+        else
+        {
+            ListaTecnicos = await tecnicoService.Listar(t => true);
+        }
+    }
+
+
+}

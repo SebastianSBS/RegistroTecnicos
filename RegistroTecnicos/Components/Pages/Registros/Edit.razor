@@ -1,5 +1,4 @@
-﻿@page "/Tecnico/Create"
-@page "/Tecnico/Create/{tecnicoId:int}"
+﻿@page "/Tecnico/Edit/{tecnicoId:int}"
 @inject TecnicoServices tecnicosService
 @rendermode InteractiveServer
 
@@ -7,12 +6,13 @@
     <DataAnnotationsValidator />
     <div class="card shadow-lg border-0 rounded" style="background-color: #f8f9fa;">
         <div class="card-header bg-primary text-white" style="text-align: center;">
-            <h3> <i class="fas fa-clipboard-list"></i> Registro de tecnicos</h3>
+            <h3> <i class="fas fa-clipboard-list"></i> Editar Tecnico</h3>
         </div>
 
         <div class="card-body">
-            @* TecnicoId *@
+
             <div class="row">
+
                 <div class="col-md-6 mb-3">
                     <label for="TecnicoId" class="form-label">TecnicoId:</label>
                     <div class="input-group">
@@ -23,14 +23,12 @@
                 </div>
             </div>
 
-            @* Nombres *@
             <div class="mb-3">
                 <label for="Nombres" class="form-label">Nombres:</label>
                 <InputText @bind-Value="Tecnico.Nombres" class="form-control" />
                 <ValidationMessage For="@(() => Tecnico.Nombres)" />
             </div>
 
-            @* SueldoHora *@
             <div class="mb-3">
                 <label for="SueldoHora" class="form-label">Sueldo hora:</label>
                 <InputNumber @bind-Value="Tecnico.SueldoHora" class="form-control" />
