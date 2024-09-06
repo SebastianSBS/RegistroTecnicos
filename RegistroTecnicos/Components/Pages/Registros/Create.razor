@@ -55,15 +55,6 @@
     public Tecnicos Tecnico { get; set; } = new Tecnicos();
     private bool Existe = false;
 
-    protected override async Task OnInitializedAsync()
-    {
-        if (tecnicoId.HasValue)
-        {
-            Tecnico.TecnicoId = tecnicoId.Value;
-            await Buscar();
-        }
-    }
-
     public async Task Buscar()
     {
         Existe = false;
