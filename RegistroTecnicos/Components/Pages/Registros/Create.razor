@@ -93,10 +93,4 @@
             Nuevo();
         }
     }
-
-    public async Task Eliminar()
-    {
-        var eliminado = await tecnicosService.Eliminar(Tecnico.TecnicoId);
-        Nuevo();
-    }
 }
