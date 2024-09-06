@@ -81,8 +81,8 @@
 
     public List<Tecnicos> ListaTecnicos = new List<Tecnicos>();
 
-    private string filtro = "Id";
-    private string valorFiltro = "";
+    private string filtro { get; set; } = "Id";
+    private string valorFiltro { get; set; } = "";
 
     protected override async Task OnInitializedAsync()
     {
