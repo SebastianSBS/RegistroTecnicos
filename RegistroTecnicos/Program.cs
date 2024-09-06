@@ -15,6 +15,7 @@ var ConStr = builder.Configuration.GetConnectionString("ConStr");
 
 builder.Services.AddDbContext<Context>(Options => Options.UseSqlite(ConStr));
 builder.Services.AddScoped<TecnicoServices>();
+builder.Services.AddScoped<TiposTecnicoServices>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
