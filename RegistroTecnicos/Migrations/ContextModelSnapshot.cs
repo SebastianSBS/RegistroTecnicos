@@ -29,6 +29,9 @@ namespace RegistroTecnicos.Migrations
                     b.Property<int>("SueldoHora")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("TipoTecnicoId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("TecnicoId");
 
                     b.ToTable("Tecnicos");

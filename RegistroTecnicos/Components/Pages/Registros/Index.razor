@@ -1,6 +1,7 @@
 ﻿@page "/Tecnico/Index"
 
 @inject TecnicoServices tecnicoService;
+@inject TiposTecnicoServices tiposTecnicoService;
 @rendermode InteractiveServer
  
 <EditForm Model="ListaTecnicos" class="border shadow-lg p-3 rounded">
@@ -17,6 +18,7 @@
                     <option value="id">ID</option>
                     <option value="nombres">Nombres</option>
                     <option value="sueldoHora">Sueldo hora</option>
+                    <option value="TipoTecnicoId">Tipo Técnico</option>
                 </select>
             </div>
             <div class="col-md-6">
@@ -38,6 +40,7 @@
             <tr>
                 <th>TecnicoId</th>
                 <th>Nombres</th>
+                <th>TipoTecnico</th>
                 <th>Sueldo hora</th>
                 <th>Ver</th>
                 <th>Editar</th>
@@ -47,9 +50,11 @@
         <tbody>
             @foreach (var tecnico in ListaTecnicos)
             {
+                var tipoTecnico = Lista_TipoTecnicos.FirstOrDefault(t => t.TipoTecnicoId == tecnico.TipoTecnicoId);
                 <tr>
                     <td>@tecnico.TecnicoId</td>
                     <td>@tecnico.Nombres</td>
+                    <td>@(tipoTecnico != null ? tipoTecnico.Descripcion : "No disponible..")</td>
                     <td>@tecnico.SueldoHora</td>
                     <td>
                         <a class="btn btn-outline-primary" href="/Tecnico/Details/@tecnico.TecnicoId">
@@ -78,8 +83,9 @@
 @code {
 
     public Tecnicos Tecnico = new Tecnicos();
-
     public List<Tecnicos> ListaTecnicos = new List<Tecnicos>();
+    public List<TiposTecnico> Lista_TipoTecnicos { get; set; } = new List<TiposTecnico>();
+
 
     private string filtro { get; set; } = "Id";
     private string valorFiltro { get; set; } = "";
@@ -87,6 +93,7 @@
     protected override async Task OnInitializedAsync()
     {
         ListaTecnicos = await tecnicoService.Listar (c => true);
+        Lista_TipoTecnicos = await tiposTecnicoService.Listar(c => true);
     }
 
     public async Task Guardar()
@@ -109,6 +116,10 @@
             else if (filtro == "sueldoHora" && int.TryParse(valorFiltro, out int SueldoHora))
             {
                 ListaTecnicos = await tecnicoService.Listar(t => t.SueldoHora == SueldoHora);
+            }
+            else if (filtro == "TipoTecnicoId" && int.TryParse(valorFiltro, out int tipoTecnicoId))
+            {
+                ListaTecnicos = await tecnicoService.Listar(t => t.TipoTecnicoId == tipoTecnicoId);
             }
         }
         else

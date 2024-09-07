@@ -2,6 +2,7 @@
 @page "/Tecnico/Delete/{TecnicoId:int}"
 @inject TecnicoServices tecnicosService
 @inject NavigationManager navigationManager
+@inject TiposTecnicoServices tipoTecnicoService
 
 @rendermode InteractiveServer
 
@@ -34,6 +35,7 @@
                                                 <ul class="list-unstyled">
                                                     <li><strong>TecnicoId:</strong> @Tecnico.TecnicoId</li>
                                                     <li><strong>Nombres:</strong> @Tecnico.Nombres</li>
+                                                    <li><strong>Tipo de Técnico:</strong> @GetTipoTecnicoDescripcion(Tecnico.TipoTecnicoId)</li>
                                                     <li><strong>Sueldo Hora:</strong> @Tecnico.SueldoHora</li>
                                                 </ul>
                                             </div>
@@ -62,9 +64,12 @@ else
     [Parameter]
     public int TecnicoId { get; set; }
     public Tecnicos? Tecnico { get; set; } = new Tecnicos();
+    public List<TiposTecnico> Lista_TipoTecnicos { get; set; } = new List<TiposTecnico>();
 
     protected override async Task OnInitializedAsync()
     {
+        Lista_TipoTecnicos = await tipoTecnicoService.ObtenerTipoTecnicos();
+
         if (TecnicoId != 0)
         {
             Tecnico = await tecnicosService.Buscar(TecnicoId);
@@ -87,5 +92,11 @@ else
     public void Volver()
     {
         navigationManager.NavigateTo("/Tecnico/Index");
+    }
+
+    private string GetTipoTecnicoDescripcion(int tipoTecnicoId)
+    {
+        var tipo = Lista_TipoTecnicos.FirstOrDefault(t => t.TipoTecnicoId == tipoTecnicoId);
+        return tipo?.Descripcion ?? "No disponible..";
     }
 }

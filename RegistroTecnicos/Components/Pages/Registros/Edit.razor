@@ -1,5 +1,6 @@
 ﻿@page "/Tecnico/Edit/{tecnicoId:int}"
 @inject TecnicoServices tecnicosService
+@inject TiposTecnicoServices tipoTecnicoService
 @rendermode InteractiveServer
 
 <EditForm Model="Tecnico" OnValidSubmit="Guardar">
@@ -30,6 +31,18 @@
             </div>
 
             <div class="mb-3">
+                <label for="TipoTecnicoId" class="form-label">Tipo de Técnico:</label>
+                <InputSelect @bind-Value="Tecnico.TipoTecnicoId" class="form-select">
+                    <option value="" disabled>Seleccione un tipo</option>
+                    @foreach (var tipo in Lista_TipoTecnicos)
+                    {
+                        <option value="@tipo.TipoTecnicoId">@tipo.Descripcion</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => Tecnico.TipoTecnicoId)" />
+            </div>
+
+            <div class="mb-3">
                 <label for="SueldoHora" class="form-label">Sueldo hora:</label>
                 <InputNumber @bind-Value="Tecnico.SueldoHora" class="form-control" />
                 <ValidationMessage For="@(() => Tecnico.SueldoHora)" />
@@ -51,14 +64,22 @@
     [Parameter]
     public int? tecnicoId { get; set; }
     public Tecnicos Tecnico { get; set; } = new Tecnicos();
+    public int? tipoTecnicoId { get; set; }
+    public List<TiposTecnico> Lista_TipoTecnicos { get; set; } = new List<TiposTecnico>();
     private bool Existe = false;
 
     protected override async Task OnInitializedAsync()
     {
+        Lista_TipoTecnicos = await tipoTecnicoService.ObtenerTipoTecnicos();
+
         if (tecnicoId.HasValue)
         {
-            Tecnico.TecnicoId = tecnicoId.Value;
-            await Buscar();
+            Tecnico = await tecnicosService.Buscar(tecnicoId.Value);
+
+            if (Tecnico == null)
+            {
+                Tecnico = new Tecnicos();
+            }
         }
     }
 
