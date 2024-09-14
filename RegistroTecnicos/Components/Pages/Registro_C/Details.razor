@@ -1,5 +1,5 @@
-﻿@page "/Cliente/Details"
-@page "/Cliente/Details/{ClienteId:int}"
+﻿@page "/Clientes/Details"
+@page "/Clientes/Details/{ClienteId:int}"
 @inject ClienteServices clienteService
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
@@ -50,6 +50,6 @@ else
 
     public void Volver()
     {
-        navigationManager.NavigateTo("/Cliente/Index");
+        navigationManager.NavigateTo("/Clientes/Index");
     }
 }

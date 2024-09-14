@@ -9,5 +9,5 @@ public class Clientes
     [Required(ErrorMessage = "El campo Nombres es obligatorio..")]
     public string Nombres { get; set; }
     [Required(ErrorMessage = "El campo wasa es obligatorio..")]
-    public int WhatsApp { get; set; }
+    public string WhatsApp { get; set; }
 }
