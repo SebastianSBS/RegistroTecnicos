@@ -50,7 +50,7 @@ public class TrabajoServices
     {
         return await _context.Trabajos.AsNoTracking().FirstOrDefaultAsync(t => t.TrabajoId == TrabajoId);
     }
-
+    
     public async Task<List<Trabajos>> Listar(Expression<Func<Trabajos, bool>> criterio)
     {
         return await _context.Trabajos.AsNoTracking().Where(criterio).ToListAsync();
