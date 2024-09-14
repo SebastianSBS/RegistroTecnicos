@@ -16,7 +16,7 @@ public class ClienteServices
 
     public async Task<bool> Existe(int ClienteId)
     {
-        return await _context.Clientes.AnyAsync(c => c.ClientesId == ClienteId);
+        return await _context.Clientes.AnyAsync(c => c.ClienteId == ClienteId);
     }
 
     public async Task<bool> Insertar(Clientes cliente)
@@ -33,7 +33,7 @@ public class ClienteServices
 
     public async Task<bool> Guardar(Clientes cliente)
     {
-        if (!await Existe(cliente.ClientesId))
+        if (!await Existe(cliente.ClienteId))
             return await Insertar(cliente);
         else
             return await Modificar(cliente);
@@ -41,14 +41,14 @@ public class ClienteServices
 
     public async Task<bool> Eliminar(int ClienteId)
     {
-        var cliente = await _context.Clientes.Where(c => c.ClientesId == ClienteId)
+        var cliente = await _context.Clientes.Where(c => c.ClienteId == ClienteId)
             .ExecuteDeleteAsync();
         return cliente > 0;
     }
 
     public async Task<Clientes?> Buscar(int ClienteId)
     {
-        return await _context.Clientes.AsNoTracking().FirstOrDefaultAsync(c => c.ClientesId == ClienteId);
+        return await _context.Clientes.AsNoTracking().FirstOrDefaultAsync(c => c.ClienteId == ClienteId);
     }
 
     public async Task<List<Clientes>> Listar(Expression<Func<Clientes, bool>> criterio)
