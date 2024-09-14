@@ -12,6 +12,10 @@ public class Context : DbContext
 
     public DbSet<TiposTecnico> TiposTecnicos { get; set; }
 
+    public DbSet<Clientes> Clientes { get; set; }
+
+    public DbSet<Trabajos> Trabajos { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<TiposTecnico>().HasData

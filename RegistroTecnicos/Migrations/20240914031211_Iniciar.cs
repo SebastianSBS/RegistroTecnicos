@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -12,6 +13,20 @@ namespace RegistroTecnicos.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Clientes",
+                columns: table => new
+                {
+                    ClientesId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Nombres = table.Column<string>(type: "TEXT", nullable: false),
+                    WhatsApp = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Clientes", x => x.ClientesId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Tecnicos",
                 columns: table => new
@@ -41,6 +56,23 @@ namespace RegistroTecnicos.Migrations
                     table.PrimaryKey("PK_TiposTecnicos", x => x.TipoTecnicoId);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Trabajos",
+                columns: table => new
+                {
+                    TrabajoId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Fecha = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ClienteId = table.Column<int>(type: "INTEGER", nullable: false),
+                    TecnicoId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Descripcion = table.Column<string>(type: "TEXT", nullable: false),
+                    Monto = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Trabajos", x => x.TrabajoId);
+                });
+
             migrationBuilder.InsertData(
                 table: "TiposTecnicos",
                 columns: new[] { "TipoTecnicoId", "Descripcion", "TecnicoId" },
@@ -58,10 +90,16 @@ namespace RegistroTecnicos.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Clientes");
+
+            migrationBuilder.DropTable(
                 name: "Tecnicos");
 
             migrationBuilder.DropTable(
                 name: "TiposTecnicos");
+
+            migrationBuilder.DropTable(
+                name: "Trabajos");
         }
     }
 }
