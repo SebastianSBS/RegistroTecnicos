@@ -27,8 +27,9 @@ namespace RegistroTecnicos.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("WhatsApp")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("WhatsApp")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("ClienteId");
 
@@ -122,8 +123,8 @@ namespace RegistroTecnicos.Migrations
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Monto")
-                        .HasColumnType("INTEGER");
+                    b.Property<decimal>("Monto")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("TecnicoId")
                         .HasColumnType("INTEGER");

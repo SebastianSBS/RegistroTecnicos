@@ -50,7 +50,7 @@ else
     [Parameter]
     public int TrabajoId { get; set; }
     public Trabajos? Trabajo { get; set; } = new Trabajos();
-    public Clientes Cliente { get; set; } = new Clientes();
+    public Clientes? Cliente { get; set; } = new Clientes();
 
     protected override async Task OnInitializedAsync()
     {

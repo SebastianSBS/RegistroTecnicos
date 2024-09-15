@@ -11,8 +11,8 @@ using RegistroTecnicos.DAL;
 namespace RegistroTecnicos.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20240914031211_Iniciar")]
-    partial class Iniciar
+    [Migration("20240915024246_Actualizacion")]
+    partial class Actualizacion
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,7 +22,7 @@ namespace RegistroTecnicos.Migrations
 
             modelBuilder.Entity("RegistroTecnicos.Models.Clientes", b =>
                 {
-                    b.Property<int>("ClientesId")
+                    b.Property<int>("ClienteId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -30,10 +30,11 @@ namespace RegistroTecnicos.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("WhatsApp")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("WhatsApp")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.HasKey("ClientesId");
+                    b.HasKey("ClienteId");
 
                     b.ToTable("Clientes");
                 });
@@ -125,8 +126,8 @@ namespace RegistroTecnicos.Migrations
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Monto")
-                        .HasColumnType("INTEGER");
+                    b.Property<decimal>("Monto")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("TecnicoId")
                         .HasColumnType("INTEGER");
