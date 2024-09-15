@@ -55,4 +55,9 @@ public class TecnicoServices
     {
         return await _context.Tecnicos.AsNoTracking().Where(criterio).ToListAsync();
     }
+
+    public async Task<List<Tecnicos>> GetTecnicos()
+    {
+        return await _context.Tecnicos.ToListAsync();
+    }
 }

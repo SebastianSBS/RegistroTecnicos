@@ -1,0 +1,65 @@
+﻿@page "/Trabajos/Details"
+@page "/Trabajos/Details/{TrabajoId:int}"
+@inject TrabajoServices trabajoService
+@inject ClienteServices clienteService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+<PageTitle>Detalles del trabajo</PageTitle>
+
+@if (Trabajo != null)
+{
+    <div class="container">
+        <div class="card shadow-header">
+            <div class="card-header  bg-primary text-white text-center py-2 rounded">
+                <h3 class="text-center"><strong>Detalles del trabajo</strong></h3>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li><strong>TrabajoId:</strong> @Trabajo.TrabajoId</li>
+                                <li><strong>Fecha:</strong> @Trabajo.Fecha</li>
+                                <li><strong>ClienteId:</strong> @Trabajo.ClienteId</li>
+                                <li><strong>TecnicoId:</strong> @Trabajo.TecnicoId</li>
+                                <li><strong>Descripcion:</strong> @Trabajo.Descripcion</li>
+                                <li><strong>Monto:</strong> @Trabajo.Monto</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="button" class="btn btn-outline-primary" @onclick="Volver"><i class="bi bi-box-arrow-left"></i> Volver</button>
+                <a href=@($"https://wa.me/{Cliente?.WhatsApp}?text=Gracias%20por%20preferirnos,%20señor(a)%20{Cliente.Nombres}%20,su%20trabajo%20está%20listo.") class="btn btn-success">
+                    <span class="bi bi-whatsapp"></span> Enviar..
+                </a>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p>No se halló el trabajo.</p>
+}
+
+@code {
+    [Parameter]
+    public int TrabajoId { get; set; }
+    public Trabajos? Trabajo { get; set; } = new Trabajos();
+    public Clientes Cliente { get; set; } = new Clientes();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Trabajo = await trabajoService.Buscar(TrabajoId);
+        Cliente = await clienteService.Buscar(Trabajo.ClienteId);
+    }
+
+    public void Volver()
+    {
+        navigationManager.NavigateTo("/Trabajos/Index");
+    }
+}
