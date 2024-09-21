@@ -1,11 +1,12 @@
-﻿@page "/Clientes/Index"
-@inject ClienteServices clienteService
+﻿@page "/Prioridades/Index"
+
+@inject PrioridadesServices prioridadesService
 @rendermode InteractiveServer
  
-<EditForm Model="ListaClientes" class="border shadow-lg p-3 rounded">
+<EditForm Model="ListaPrioridades" class="border shadow-lg p-3 rounded">
     
     <div class="card-header bg-primary text-white text-center py-2 rounded">
-        <h3 style="font-weight: bold;" class="mb-0 font-weight-bold">Consulta Clientes</h3>
+        <h3 style="font-weight: bold;" class="mb-0 font-weight-bold">Consulta prioridades</h3>
     </div>
     <div class="card-body">
 
@@ -14,8 +15,8 @@
                 <label for="Filtro" class="form-label">Filtrar por:</label>
                 <select @bind="filtro" class="form-select">
                     <option value="id">ID</option>
-                    <option value="nombres">Nombres</option>
-                    <option value="WhatsApp">WhatsApp</option>
+                    <option value="descripcion">Descripcion</option>
+                    <option value="tiempo">Tiempo</option>
                 </select>
             </div>
             <div class="col-md-6">
@@ -28,42 +29,42 @@
                 </div>
             </div>
             <div class="col-md-3 text-end">
-                <a href="/Clientes/Create" class="btn btn-success" type="button"><span class="bi bi-floppy"></span> Crear </a>
+                <a href="/Prioridades/Create" class="btn btn-success" type="button"><span class="bi bi-floppy"></span> Crear </a>
             </div>
         </div>
     </div>
     <table class="table table-bordered text-center">
         <thead class="bg-primary text-white">
             <tr>
-                <th>ClienteId</th>
-                <th>Nombres</th>
-                <th>WhatsApp</th>
+                <th>PrioridadId</th>
+                <th>Descripcion</th>
+                <th>Tiempo</th>
                 <th>Ver</th>
                 <th>Editar</th>
                 <th>Eliminar</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var cliente in ListaClientes)
+            @foreach (var prioridad in ListaPrioridades)
             {
                 <tr>
-                    <td>@cliente.ClienteId</td>
-                    <td>@cliente.Nombres</td>
-                    <td>@cliente.WhatsApp</td>
+                    <td>@prioridad.PrioridadId</td>
+                    <td>@prioridad.Descripcion</td>
+                    <td>@prioridad.Tiempo</td>
                     <td>
-                        <a class="btn btn-outline-primary" href="/Clientes/Details/@cliente.ClienteId">
+                        <a class="btn btn-outline-primary" href="/Prioridad/Details/@prioridad.PrioridadId">
                             <span class="bi bi-info-circle-fill"></span>
                         </a>
                     </td>
 
                     <td>
-                        <a class="btn btn-outline-success" href="/Clientes/Edit/@cliente.ClienteId">
+                        <a class="btn btn-outline-success" href="/Prioridad/Edit/@prioridad.PrioridadId">
                             <span class="bi bi-marker-tip"></span>
                         </a>
                     </td>
 
                     <td>
-                        <a class="btn btn-outline-warning" href="/Clientes/Delete/@cliente.ClienteId">
+                        <a class="btn btn-outline-warning" href="/Prioridad/Delete/@prioridad.PrioridadId">
                             <span class="bi bi-dash-circle-fill"></span>
                         </a>
                     </td>
@@ -76,44 +77,43 @@
 
 @code {
 
-    public Clientes Clientes = new Clientes();
-    public string WhatsApp = "";
+    public Prioridades Prioridad = new Prioridades();
 
-    public List<Clientes> ListaClientes = new List<Clientes>();
+    public List<Prioridades> ListaPrioridades = new List<Prioridades>();
 
     private string filtro { get; set; } = "Id";
     private string valorFiltro { get; set; } = "";
 
     protected override async Task OnInitializedAsync()
     {
-        ListaClientes = await clienteService.Listar (c => true);
+        ListaPrioridades = await prioridadesService.Listar (p => true);
     }
 
     public async Task Guardar()
     {
-        var guardo = await clienteService.Guardar(Clientes);
+        var guardo = await prioridadesService.Guardar(Prioridad);
     }
 
     private async Task Buscar()
     {
         if (valorFiltro.Trim() != "")
         {
-            if (filtro == "id" && int.TryParse(valorFiltro, out int ClienteId))
+            if (filtro == "id" && int.TryParse(valorFiltro, out int PrioridadId))
             {
-                ListaClientes = await clienteService.Listar(t => t.ClienteId == ClienteId);
+                ListaPrioridades = await prioridadesService.Listar(t => t.PrioridadId == PrioridadId);
             }
-            else if (filtro == "nombres")
+            else if (filtro == "Descripcion")
             {
-                ListaClientes = await clienteService.Listar(t => t.Nombres == valorFiltro);
+                ListaPrioridades = await prioridadesService.Listar(t => t.Descripcion == valorFiltro);
             }
-            else if (filtro == "WhatsApp" && valorFiltro == WhatsApp)
+            else if (filtro == "Tiempo" && int.TryParse(valorFiltro, out int Tiempo))
             {
-                ListaClientes = await clienteService.Listar(w => w.WhatsApp == WhatsApp);
+                ListaPrioridades = await prioridadesService.Listar(t => t.Tiempo == Tiempo);
             }
         }
         else
         {
-            ListaClientes = await clienteService.Listar(t => true);
+            ListaPrioridades = await prioridadesService.Listar(t => true);
         }
     }
 

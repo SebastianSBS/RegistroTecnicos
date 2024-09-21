@@ -16,6 +16,8 @@ public class Context : DbContext
 
     public DbSet<Trabajos> Trabajos { get; set; }
 
+    public DbSet<Prioridades> Priodades { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<TiposTecnico>().HasData

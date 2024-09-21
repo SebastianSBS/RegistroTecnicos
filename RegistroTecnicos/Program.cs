@@ -18,6 +18,7 @@ builder.Services.AddScoped<TecnicoServices>();
 builder.Services.AddScoped<TiposTecnicoServices>();
 builder.Services.AddScoped<ClienteServices>();
 builder.Services.AddScoped<TrabajoServices>();
+builder.Services.AddScoped<PrioridadesServices>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
