@@ -31,7 +31,7 @@
 
             <div class="mb-3">
                 <label for="Tiempo" class="form-label">Tiempo:</label>
-                <InputDate @bind-Value="Prioridad.Tiempo" class="form-control" />
+                <InputNumber @bind-Value="Prioridad.Tiempo" class="form-control" />
                 <ValidationMessage For="@(() => Prioridad.Tiempo)" />
             </div>
 
