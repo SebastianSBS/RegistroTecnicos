@@ -37,7 +37,7 @@
                 <label for="TipoTecnicoId" class="form-label">Tipo de Técnico:</label>
                 <InputSelect @bind-Value="Tecnico.TipoTecnicoId" class="form-select">
                     <option value="" disabled>Seleccione un tipo</option>
-                    @foreach (var tipo in Lista_TipoTecnicos)
+                    @foreach (var tipo in TiposTecnicos)
                     {
                         <option value="@tipo.TipoTecnicoId">@tipo.Descripcion</option>
                     }
@@ -71,11 +71,11 @@
     public int? TipoTecnicoId { get; set; } 
     private bool Existe = false;
     public TiposTecnicos TipoTecnicos { get; set; } = new TiposTecnicos();
-    public List<TiposTecnicos> Lista_TipoTecnicos { get; set; } = new List<TiposTecnicos>();
+    public List<TiposTecnicos> TiposTecnicos { get; set; } = new List<TiposTecnicos>();
 
     protected override async Task OnInitializedAsync()
     {
-        Lista_TipoTecnicos = await tiposTecnicoService.ObtenerTipoTecnicos();
+        TiposTecnicos = await tiposTecnicoService.ObtenerTipoTecnicos();
 
         if (TipoTecnicoId.HasValue)
         {
