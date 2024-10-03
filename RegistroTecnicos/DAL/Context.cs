@@ -10,7 +10,7 @@ public class Context : DbContext
 
     public DbSet<Tecnicos> Tecnicos { get; set; }
 
-    public DbSet<TiposTecnico> TiposTecnicos { get; set; }
+    public DbSet<TiposTecnicos> TiposTecnicos { get; set; }
 
     public DbSet<Clientes> Clientes { get; set; }
 
@@ -20,36 +20,36 @@ public class Context : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<TiposTecnico>().HasData
+        modelBuilder.Entity<TiposTecnicos>().HasData
         (
-            new TiposTecnico
+            new TiposTecnicos
             {
                 TipoTecnicoId = 1,
                 Descripcion = "Redes",
             },
 
-            new TiposTecnico
+            new TiposTecnicos
             {
                 TipoTecnicoId = 2,
                 Descripcion = "Reparacion",
 
             },
 
-            new TiposTecnico
+            new TiposTecnicos
             {
                 TipoTecnicoId = 3,
                 Descripcion = "Impresoras",
 
             },
 
-            new TiposTecnico
+            new TiposTecnicos
             {
                 TipoTecnicoId = 4,
                 Descripcion = "Soporte",
 
             },
 
-            new TiposTecnico
+            new TiposTecnicos
             {
                 TipoTecnicoId = 5,
                 Descripcion = "Celulares",

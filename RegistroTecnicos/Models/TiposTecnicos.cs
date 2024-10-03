@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RegistroTecnicos.Models;
-public class TiposTecnico
+public class TiposTecnicos
 {
     [Key]
     public int TipoTecnicoId { get; set; }

@@ -19,19 +19,19 @@ public class TiposTecnicoServices
         return await _context.TiposTecnicos.AnyAsync(t => t.TipoTecnicoId == TipoTecnicoId);
     }
 
-    public async Task<bool> Insertar(TiposTecnico tipoTecnicos)
+    public async Task<bool> Insertar(TiposTecnicos tipoTecnicos)
     {
         _context.TiposTecnicos.Add(tipoTecnicos);
         return await _context.SaveChangesAsync() > 0;
     }
 
-    public async Task<bool> Modificar(TiposTecnico tipoTecnicos)
+    public async Task<bool> Modificar(TiposTecnicos tipoTecnicos)
     {
         _context.Update(tipoTecnicos);
         return await _context.SaveChangesAsync() > 0;
     }
 
-    public async Task<bool> Guardar(TiposTecnico tipoTecnicos)
+    public async Task<bool> Guardar(TiposTecnicos tipoTecnicos)
     {
         if (!await Existe(tipoTecnicos.TipoTecnicoId))
             return await Insertar(tipoTecnicos);
@@ -46,17 +46,17 @@ public class TiposTecnicoServices
         return tipoTecnicoId > 0;
     }
 
-    public async Task<TiposTecnico?> Buscar(int tipoTecnicoId)
+    public async Task<TiposTecnicos?> Buscar(int tipoTecnicoId)
     {
         return await _context.TiposTecnicos.AsNoTracking().FirstOrDefaultAsync(t => t.TipoTecnicoId == tipoTecnicoId);
     }
 
-    public async Task<List<TiposTecnico>> Listar(Expression<Func<TiposTecnico, bool>> criterio)
+    public async Task<List<TiposTecnicos>> Listar(Expression<Func<TiposTecnicos, bool>> criterio)
     {
         return await _context.TiposTecnicos.AsNoTracking().Where(criterio).ToListAsync();
     }
 
-    public async Task<List<TiposTecnico>> ObtenerTipoTecnicos()
+    public async Task<List<TiposTecnicos>> ObtenerTipoTecnicos()
     {
         return await _context.TiposTecnicos.ToListAsync();
     }

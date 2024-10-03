@@ -65,7 +65,7 @@
     public int? tecnicoId { get; set; }
     public Tecnicos Tecnico { get; set; } = new Tecnicos();
     public int? tipoTecnicoId { get; set; }
-    public List<TiposTecnico> Lista_TipoTecnicos { get; set; } = new List<TiposTecnico>();
+    public List<TiposTecnicos> Lista_TipoTecnicos { get; set; } = new List<TiposTecnicos>();
     private bool Existe = false;
 
     protected override async Task OnInitializedAsync()
