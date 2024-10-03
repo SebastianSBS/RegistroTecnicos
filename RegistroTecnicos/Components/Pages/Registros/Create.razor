@@ -87,11 +87,11 @@
     public async Task Buscar()
     {
         Existe = false;
-        var TecnicoE = await tecnicosService.Buscar(Tecnico.TecnicoId);
+        var tipoTecnicoE = await tecnicosService.Buscar(Tecnico.TecnicoId);
 
-        if (TecnicoE != null)
+        if (tipoTecnicoE != null)
         {
-            Tecnico = TecnicoE;
+            Tecnico = tipoTecnicoE;
         }
         else
         {
