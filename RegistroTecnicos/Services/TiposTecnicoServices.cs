@@ -14,9 +14,9 @@ public class TiposTecnicoServices
         _context = context;
     }
 
-    public async Task<bool> Existe(int TipoTecnicoId)
+    public async Task<bool> Existe(int tipoTecnicoId)
     {
-        return await _context.TiposTecnicos.AnyAsync(t => t.TipoTecnicoId == TipoTecnicoId);
+        return await _context.TiposTecnicos.AnyAsync(t => t.TipoTecnicoId == tipoTecnicoId);
     }
 
     public async Task<bool> Insertar(TiposTecnicos tipoTecnicos)

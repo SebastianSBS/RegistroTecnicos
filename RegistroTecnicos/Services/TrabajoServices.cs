@@ -14,9 +14,9 @@ public class TrabajoServices
         _context = context;
     }
 
-    public async Task<bool> Existe(int TrabajoId)
+    public async Task<bool> Existe(int trabajoId)
     {
-        return await _context.Trabajos.AnyAsync(t => t.TrabajoId == TrabajoId);
+        return await _context.Trabajos.AnyAsync(t => t.TrabajoId == trabajoId);
     }
 
     public async Task<bool> Insertar(Trabajos trabajo)
@@ -39,16 +39,16 @@ public class TrabajoServices
             return await Modificar(trabajos);
     }
 
-    public async Task<bool> Eliminar(int TrabajoId)
+    public async Task<bool> Eliminar(int trabajoId)
     {
-        var trabajo = await _context.Trabajos.Where(t => t.TrabajoId == TrabajoId)
+        var trabajo = await _context.Trabajos.Where(t => t.TrabajoId == trabajoId)
             .ExecuteDeleteAsync();
         return trabajo > 0;
     }
 
-    public async Task<Trabajos?> Buscar(int TrabajoId)
+    public async Task<Trabajos?> Buscar(int trabajoId)
     {
-        return await _context.Trabajos.AsNoTracking().FirstOrDefaultAsync(t => t.TrabajoId == TrabajoId);
+        return await _context.Trabajos.AsNoTracking().FirstOrDefaultAsync(t => t.TrabajoId == trabajoId);
     }
     
     public async Task<List<Trabajos>> Listar(Expression<Func<Trabajos, bool>> criterio)

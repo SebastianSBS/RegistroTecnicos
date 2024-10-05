@@ -14,9 +14,9 @@ public class PrioridadesServices
         _context = context;
     }
 
-    public async Task<bool> Existe(int PrioridadId)
+    public async Task<bool> Existe(int prioridadId)
     {
-        return await _context.Priodades.AnyAsync(t => t.PrioridadId == PrioridadId);
+        return await _context.Priodades.AnyAsync(t => t.PrioridadId == prioridadId);
     }
 
     public async Task<bool> Insertar(Prioridades prioridades)
@@ -39,16 +39,16 @@ public class PrioridadesServices
             return await Modificar(prioridades);
     }
 
-    public async Task<bool> Eliminar(int PrioridadId)
+    public async Task<bool> Eliminar(int prioridadId)
     {
-        var prioridades = await _context.Priodades.Where(t => t.PrioridadId == PrioridadId)
+        var prioridades = await _context.Priodades.Where(t => t.PrioridadId == prioridadId)
             .ExecuteDeleteAsync();
         return prioridades > 0;
     }
 
-    public async Task<Prioridades?> Buscar(int PrioridadId)
+    public async Task<Prioridades?> Buscar(int prioridadId)
     {
-        return await _context.Priodades.AsNoTracking().FirstOrDefaultAsync(t => t.PrioridadId == PrioridadId);
+        return await _context.Priodades.AsNoTracking().FirstOrDefaultAsync(t => t.PrioridadId == prioridadId);
     }
 
     public async Task<List<Prioridades>> Listar(Expression<Func<Prioridades, bool>> criterio)
