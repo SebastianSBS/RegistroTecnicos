@@ -26,8 +26,13 @@
             </div>
 
             <div class="mb-3">
-                <label for="Descripcion" class="form-label">Descripcion:</label>
-                <InputText @bind-Value="Prioridad.Descripcion" class="form-control" />
+                <label for="Descripcion" class="form-label">Nivel de Prioridad:</label>
+                <InputSelect @bind-Value="Prioridad.Descripcion" class="form-control">
+                    @foreach (var prioridad in NivelPrioridad)
+                    {
+                        <option value="@prioridad">@prioridad</option>
+                    }
+                </InputSelect>
                 <ValidationMessage For="@(() => Prioridad.Descripcion)" />
             </div>
 
@@ -54,6 +59,7 @@
     public int? PrioridadId { get; set; }
     public Prioridades Prioridad { get; set; } = new Prioridades();
     private bool Existe = false;
+    public List<string> NivelPrioridad { get; set; } = new List<string> { "Alta", "Media", "Baja" };
 
     protected override async Task OnInitializedAsync()
     {
