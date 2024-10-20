@@ -37,7 +37,11 @@
                                                     <li><strong>ClienteId:</strong> @Trabajo.ClienteId</li>
                                                     <li><strong>TecnicoId:</strong> @Trabajo.TecnicoId</li>
                                                     <li><strong>Descripcion:</strong> @Trabajo.Descripcion</li>
-                                                    <li><strong>Monto:</strong> @Trabajo.Monto</li>
+                                                    @foreach (var detalle in Lista_TrabajoDetalles)
+                                                    {
+                                                        <li><strong>Articulo: </strong>@detalle.Articulos.Descripcion</li>
+                                                    }
+                                                    <li><strong>Monto total:</strong> @Trabajo.Monto</li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -65,12 +69,14 @@ else
     [Parameter]
     public int TrabajoId { get; set; }
     public Trabajos? Trabajo { get; set; } = new Trabajos();
+    public List<TrabajosDetalle> Lista_TrabajoDetalles { get; set; } = new List<TrabajosDetalle>();
 
     protected override async Task OnInitializedAsync()
     {
         if (TrabajoId != 0)
         {
             Trabajo = await trabajoService.Buscar(TrabajoId);
+            Lista_TrabajoDetalles = await trabajoService.BuscarTrabajoDetalle(TrabajoId);
         }
     }
 

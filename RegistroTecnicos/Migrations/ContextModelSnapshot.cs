@@ -240,6 +240,8 @@ namespace RegistroTecnicos.Migrations
 
                     b.HasKey("DetalleId");
 
+                    b.HasIndex("ArticuloId");
+
                     b.HasIndex("TrabajoId");
 
                     b.ToTable("trabajosDetalles");
@@ -247,11 +249,21 @@ namespace RegistroTecnicos.Migrations
 
             modelBuilder.Entity("RegistroTecnicos.Models.TrabajosDetalle", b =>
                 {
-                    b.HasOne("RegistroTecnicos.Models.Trabajos", null)
+                    b.HasOne("RegistroTecnicos.Models.Articulos", "Articulos")
+                        .WithMany()
+                        .HasForeignKey("ArticuloId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RegistroTecnicos.Models.Trabajos", "Trabajos")
                         .WithMany("trabajosDetalle")
                         .HasForeignKey("TrabajoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Articulos");
+
+                    b.Navigation("Trabajos");
                 });
 
             modelBuilder.Entity("RegistroTecnicos.Models.Trabajos", b =>

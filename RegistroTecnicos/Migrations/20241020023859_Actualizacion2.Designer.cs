@@ -11,7 +11,7 @@ using RegistroTecnicos.DAL;
 namespace RegistroTecnicos.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20241017022655_Actualizacion2")]
+    [Migration("20241020023859_Actualizacion2")]
     partial class Actualizacion2
     {
         /// <inheritdoc />
@@ -26,8 +26,8 @@ namespace RegistroTecnicos.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("Costo")
-                        .HasColumnType("REAL");
+                    b.Property<decimal>("Costo")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Descripcion")
                         .HasColumnType("TEXT");
@@ -35,8 +35,8 @@ namespace RegistroTecnicos.Migrations
                     b.Property<int>("Existencia")
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("Precio")
-                        .HasColumnType("REAL");
+                    b.Property<decimal>("Precio")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("ArticuloId");
 
@@ -46,42 +46,42 @@ namespace RegistroTecnicos.Migrations
                         new
                         {
                             ArticuloId = 1,
-                            Costo = 350.0,
+                            Costo = 350m,
                             Descripcion = "Pasta termica",
                             Existencia = 10,
-                            Precio = 400.0
+                            Precio = 400m
                         },
                         new
                         {
                             ArticuloId = 2,
-                            Costo = 800.0,
+                            Costo = 800m,
                             Descripcion = "HDD SEAGATE 250GB",
                             Existencia = 5,
-                            Precio = 970.0
+                            Precio = 970m
                         },
                         new
                         {
                             ArticuloId = 3,
-                            Costo = 600.0,
+                            Costo = 600m,
                             Descripcion = "Memoria RAM 2 GB DDR3",
                             Existencia = 15,
-                            Precio = 850.0
+                            Precio = 850m
                         },
                         new
                         {
                             ArticuloId = 4,
-                            Costo = 750.0,
+                            Costo = 750m,
                             Descripcion = "Tarjeta de sonido Sound blaster 5/RX",
                             Existencia = 4,
-                            Precio = 1200.0
+                            Precio = 1200m
                         },
                         new
                         {
                             ArticuloId = 5,
-                            Costo = 80.0,
+                            Costo = 80m,
                             Descripcion = "Cable SATA de datos",
                             Existencia = 30,
-                            Precio = 100.0
+                            Precio = 100m
                         });
                 });
 
@@ -232,16 +232,18 @@ namespace RegistroTecnicos.Migrations
                     b.Property<int>("Cantidad")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Costo")
-                        .HasColumnType("INTEGER");
+                    b.Property<decimal>("Costo")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("Precio")
-                        .HasColumnType("INTEGER");
+                    b.Property<decimal>("Precio")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("TrabajoId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("DetalleId");
+
+                    b.HasIndex("ArticuloId");
 
                     b.HasIndex("TrabajoId");
 
@@ -250,11 +252,21 @@ namespace RegistroTecnicos.Migrations
 
             modelBuilder.Entity("RegistroTecnicos.Models.TrabajosDetalle", b =>
                 {
-                    b.HasOne("RegistroTecnicos.Models.Trabajos", null)
+                    b.HasOne("RegistroTecnicos.Models.Articulos", "Articulos")
+                        .WithMany()
+                        .HasForeignKey("ArticuloId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RegistroTecnicos.Models.Trabajos", "Trabajos")
                         .WithMany("trabajosDetalle")
                         .HasForeignKey("TrabajoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Articulos");
+
+                    b.Navigation("Trabajos");
                 });
 
             modelBuilder.Entity("RegistroTecnicos.Models.Trabajos", b =>

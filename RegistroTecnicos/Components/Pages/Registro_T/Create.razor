@@ -124,7 +124,7 @@
                                     <td>@trabajoDetalles.ArticuloId</td>
                                     <td>@trabajoDetalles.Cantidad</td>
                                     <td>@trabajoDetalles.Precio</td>
-                                    <td><button @onclick="@(() => RemoverDetalle(trabajoDetalles))" class="btn btn-outline-danger" type="button"><i class="oi oi-trash">Eliminar</i></button></td>
+                                    <td><button @onclick="@(() => RemoverDetalle(trabajoDetalles))" class="btn btn-outline-danger" type="button"><i class="bi bi-trash">Eliminar</i></button></td>
                                 </tr>
                             }
                         </tbody>
@@ -149,7 +149,6 @@
     public Trabajos Trabajo { get; set; } = new Trabajos();
     private bool Existe = false;
     public int articuloSeleccionado { get; set; }
-    public int cantidadUtilizada { get; set; }
     public TrabajosDetalle TrabajoDetalle { get; set; } = new TrabajosDetalle();
     public List<Clientes> Lista_Clientes { get; set; } = new List<Clientes>();
     public List<Tecnicos> Lista_Tecnicos { get; set; } = new List<Tecnicos>();
@@ -181,37 +180,37 @@
 
     public void AgregarDetalle()
     {
-        var seleccionado = Lista_Articulos
+        var seleccionArticulo = Lista_Articulos
         .FirstOrDefault(a => a.ArticuloId == articuloSeleccionado);
 
-        if (seleccionado != null && TrabajoDetalle.Cantidad > 0)
+        if (seleccionArticulo != null && TrabajoDetalle.Cantidad > 0)
         {
-            TrabajoDetalle.Precio = seleccionado.Precio;
+            TrabajoDetalle.Precio = seleccionArticulo.Precio;
 
-            var nuevoDetalle = new TrabajosDetalle
+            var detalleNuevo = new TrabajosDetalle
                 {
-                    ArticuloId = seleccionado.ArticuloId,
+                    ArticuloId = seleccionArticulo.ArticuloId,
                     Cantidad = TrabajoDetalle.Cantidad,
-                    Precio = seleccionado.Precio
+                    Precio = seleccionArticulo.Precio
                 };
 
-            Trabajo.Monto += nuevoDetalle.Cantidad * nuevoDetalle.Precio;
+            Trabajo.Monto += detalleNuevo.Cantidad * detalleNuevo.Precio;
 
-            Lista_TrabajosDetalle.Add(nuevoDetalle);
+            Lista_TrabajosDetalle.Add(detalleNuevo);
             TrabajoDetalle = new TrabajosDetalle();
             articuloSeleccionado = 0;
         }
     }
 
-    public void RemoverDetalle(TrabajosDetalle eliminarDetalle)
+    public void RemoverDetalle(TrabajosDetalle detalleRemover)
     {
-        Lista_TrabajosDetalle.Remove(eliminarDetalle);
+        Lista_TrabajosDetalle.Remove(detalleRemover);
 
-        Trabajo.Monto -= eliminarDetalle.Cantidad * eliminarDetalle.Precio;
+        Trabajo.Monto -= detalleRemover.Cantidad * detalleRemover.Precio;
 
-        articuloSeleccionado = eliminarDetalle.ArticuloId;
-        TrabajoDetalle.Cantidad = eliminarDetalle.Cantidad;
-        TrabajoDetalle.Precio = eliminarDetalle.Precio;
+        articuloSeleccionado = detalleRemover.ArticuloId;
+        TrabajoDetalle.Cantidad = detalleRemover.Cantidad;
+        TrabajoDetalle.Precio = detalleRemover.Precio;
 
     }
 }

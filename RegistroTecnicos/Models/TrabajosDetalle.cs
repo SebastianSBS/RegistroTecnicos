@@ -7,10 +7,12 @@ namespace RegistroTecnicos.Models
     {
         [Key]
         public int DetalleId { get; set; }
-        [ForeignKey("TrabajoId")]
         public int TrabajoId { get; set; }
-        [ForeignKey("ArticuloId")]
+        [ForeignKey("TrabajoId")]
+        public Trabajos? Trabajos { get; set; }
         public int ArticuloId { get; set; }
+        [ForeignKey("ArticuloId")]
+        public Articulos? Articulos { get; set; }
         public int Cantidad { get; set; }
         public decimal Precio {  get; set; }
         public decimal Costo { get; set; }

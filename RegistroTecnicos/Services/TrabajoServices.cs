@@ -24,18 +24,14 @@ namespace RegistroTecnicos.Services
             
             foreach (var detalle in trabajo.trabajosDetalle)
             {
-                var articulo = await _context.Articulos.FindAsync(detalle.ArticuloId);
+                var articulo = await BuscarArticulos(detalle.ArticuloId);
 
                 if (articulo != null)
                 {
-                  
                     if (articulo.Existencia < detalle.Cantidad)
                     {
-                        
                         return false;
                     }
-
-                   
                     articulo.Existencia -= detalle.Cantidad;
                     _context.Articulos.Update(articulo);
                 }
@@ -45,52 +41,18 @@ namespace RegistroTecnicos.Services
                     return false;
                 }
             }
-
-         
             _context.Trabajos.Add(trabajo);
             await _context.SaveChangesAsync();
             return true;
         }
 
-
-        public async Task<bool> Modificar(Trabajos trabajo)
+        private async Task<bool> Modificar(Trabajos trabajo)
         {
-            var trabajoAnterior = await _context.Trabajos
-                .Include(t => t.trabajosDetalle)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(t => t.TrabajoId == trabajo.TrabajoId);
-
-            if (trabajoAnterior != null)
-            {
-              
-                foreach (var detalle in trabajoAnterior.trabajosDetalle)
-                {
-                    var articulo = await _context.Articulos.FindAsync(detalle.ArticuloId);
-                    if (articulo != null)
-                    {
-                        articulo.Existencia += detalle.Cantidad;
-                        _context.Articulos.Update(articulo);
-                    }
-                }
-
-                _context.trabajosDetalles.RemoveRange(trabajoAnterior.trabajosDetalle);
-                await _context.SaveChangesAsync();
-            }
-
-            foreach (var detalle in trabajo.trabajosDetalle)
-            {
-                var articulo = await _context.Articulos.FindAsync(detalle.ArticuloId);
-                if (articulo != null)
-                {
-                    articulo.Existencia -= detalle.Cantidad;
-                    _context.Articulos.Update(articulo);
-                }
-            }
-
-            _context.Trabajos.Update(trabajo);
-            await _context.SaveChangesAsync();
-            return true;
+            _context.Update(trabajo);
+            return await _context
+                .SaveChangesAsync() > 0;
         }
+
         public async Task<Trabajos?> Buscar(int trabajoId)
         {
             return await _context.Trabajos
@@ -132,34 +94,25 @@ namespace RegistroTecnicos.Services
         public async Task<bool> Guardar(Trabajos trabajo)
         {
             if (!await Existe(trabajo.TrabajoId))
-            {
-                foreach (var detalle in trabajo.trabajosDetalle)
-                {
-                    var articulo = await BuscarArticulos(detalle.ArticuloId);
-                    if (articulo != null)
-                    {
-                        articulo.Existencia -= detalle.Cantidad;
-                        await ActualizarArticulo(articulo);
-                    }
-                }
+            { 
                 return await Insertar(trabajo);
             }
             else
                 return await Modificar(trabajo);
         }
 
-        public async Task<List<TrabajosDetalle>> BuscarDetalle(int id)
+        public async Task<List<TrabajosDetalle>> BuscarTrabajoDetalle(int trabajoId)
         {
             return await _context.trabajosDetalles
-                //.Include(td => td.Articulo)
-                .Where(td => td.TrabajoId == id)
+                .Include(a => a.Articulos)
+                .Where(t => t.TrabajoId == trabajoId)
                  .AsNoTracking()
                 .ToListAsync();
         }
 
-        public async Task<bool> Eliminar(int id)
+        public async Task<bool> Eliminar(int trabajoId)
         {
-            var detalles = await BuscarDetalle(id);
+            var detalles = await BuscarTrabajoDetalle(trabajoId);
 
             foreach (var detalle in detalles)
             {
@@ -172,9 +125,18 @@ namespace RegistroTecnicos.Services
             }
 
             var trabajos = await _context.Trabajos
-                .Where(t => t.TrabajoId == id)
+                .Where(t => t.TrabajoId == trabajoId)
                 .ExecuteDeleteAsync();
             return trabajos > 0;
+        }
+
+        public async Task<List<TrabajosDetalle>> ListarTrabajoDetalle(int trabajoId)
+        {
+            var detalle = await _context.trabajosDetalles
+                .Where(d => d.TrabajoId == trabajoId)
+                .ToListAsync();
+
+            return detalle;
         }
 
     }
