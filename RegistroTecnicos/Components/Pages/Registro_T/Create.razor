@@ -70,51 +70,97 @@
                 <InputNumber @bind-Value="Trabajo.Monto" class="form-control" />
                 <ValidationMessage For="@(() => Trabajo.Monto)" />
             </div>
+            <fieldset class="border-success border border-1">
+                <h3>Articulos</h3>
+                <div>
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Producto</label>
+                            <div class="input-group mb-3">
+                                <InputSelect class="form-select" @bind-Value="articuloSeleccionado">
+                                    <option value="0" disabled selected>Seleccione un articulo</option>
+                                    @foreach (var articulo in Lista_Articulos)
+                                    {   
+                                      <option value="@articulo.ArticuloId">@articulo.Descripcion</option>
+                                    }
+                                </InputSelect>
+                            </div>
+                        </div>
 
+                        <div class="col-3">
+                            <label>Cantidad</label>
+                            <div class="input-group mb-3">
+                                <InputNumber @bind-Value="TrabajoDetalle.Cantidad" class="form-control"></InputNumber>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <label>Precio</label>
+                            <div class="input-group mb-3">
+                                <InputNumber @bind-Value="TrabajoDetalle.Precio" class="form-control"></InputNumber>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <button type="button" @onclick="AgregarDetalle" class="btn btn-outline-primary"><i class="bi bi-plus">Agregar</i></button> 
+                        </div>
+
+
+                    </div>
+
+                    <br>
+                    <table class="table table-bordered table-light m-1">
+                        <thead class="thead">
+                            <tr class="table">
+                                <th>Articulo Id</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var trabajoDetalles in Lista_TrabajosDetalle)
+                            {
+                                <tr>
+                                    <td>@trabajoDetalles.ArticuloId</td>
+                                    <td>@trabajoDetalles.Cantidad</td>
+                                    <td>@trabajoDetalles.Precio</td>
+                                    <td><button @onclick="@(() => RemoverDetalle(trabajoDetalles))" class="btn btn-outline-danger" type="button"><i class="oi oi-trash">Eliminar</i></button></td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+
+                </div>
+            </fieldset>
         </div>
 
         <div class="card-footer bg-light d-flex justify-content-center mt-3">
             <div class="btn-group">
                 <button type="button" class="btn btn-outline-primary ml-2" @onclick="Nuevo"><span class="bi bi-plus"></span> Nuevo </button>
                 <button type="submit" class="btn btn-outline-success ml-2"><span class="bi bi-check-circle-fill"></span> Guardar </button>
-                <a type="button" href="/Tecnico/Index/" class="btn btn-outline-danger"><span class="bi bi-arrow-bar-left"></span> Retroceder </a>
+                <a type="button" href="/Trabajos/Index/" class="btn btn-outline-danger"><span class="bi bi-arrow-bar-left"></span> Retroceder </a>
             </div>
         </div>
     </div>
 </EditForm>
 
 @code {
-    [Parameter]
-    public int? TrabajoId { get; set; }
     public Trabajos Trabajo { get; set; } = new Trabajos();
     private bool Existe = false;
+    public int articuloSeleccionado { get; set; }
+    public int cantidadUtilizada { get; set; }
+    public TrabajosDetalle TrabajoDetalle { get; set; } = new TrabajosDetalle();
     public List<Clientes> Lista_Clientes { get; set; } = new List<Clientes>();
     public List<Tecnicos> Lista_Tecnicos { get; set; } = new List<Tecnicos>();
+    public List<TrabajosDetalle> Lista_TrabajosDetalle { get; set; } = new List<TrabajosDetalle>();
+    public List<Articulos> Lista_Articulos { get; set; } = new List<Articulos>();
 
     protected override async Task OnInitializedAsync()
     {
         Lista_Clientes = await clienteService.GetClientes();
         Lista_Tecnicos = await tecnicoService.GetTecnicos();
-
-        if (TrabajoId != null)
-        {
-            await Buscar();
-        }
-    }
-
-    public async Task Buscar()
-    {
-        Existe = false;
-        var TrabajoE = await trabajoService.Buscar(Trabajo.TrabajoId);
-
-        if (TrabajoE != null)
-        {
-            Trabajo = TrabajoE;
-        }
-        else
-        {
-            Nuevo();
-        }
+        Lista_Articulos = await trabajoService.GetArticulos();
     }
 
     public void Nuevo()
@@ -125,10 +171,47 @@
 
     public async Task Guardar()
     {
+        Trabajo.trabajosDetalle = Lista_TrabajosDetalle;
         var guardo = await trabajoService.Guardar(Trabajo);
         if (guardo)
         {
             Nuevo();
         }
+    }
+
+    public void AgregarDetalle()
+    {
+        var seleccionado = Lista_Articulos
+        .FirstOrDefault(a => a.ArticuloId == articuloSeleccionado);
+
+        if (seleccionado != null && TrabajoDetalle.Cantidad > 0)
+        {
+            TrabajoDetalle.Precio = seleccionado.Precio;
+
+            var nuevoDetalle = new TrabajosDetalle
+                {
+                    ArticuloId = seleccionado.ArticuloId,
+                    Cantidad = TrabajoDetalle.Cantidad,
+                    Precio = seleccionado.Precio
+                };
+
+            Trabajo.Monto += nuevoDetalle.Cantidad * nuevoDetalle.Precio;
+
+            Lista_TrabajosDetalle.Add(nuevoDetalle);
+            TrabajoDetalle = new TrabajosDetalle();
+            articuloSeleccionado = 0;
+        }
+    }
+
+    public void RemoverDetalle(TrabajosDetalle eliminarDetalle)
+    {
+        Lista_TrabajosDetalle.Remove(eliminarDetalle);
+
+        Trabajo.Monto -= eliminarDetalle.Cantidad * eliminarDetalle.Precio;
+
+        articuloSeleccionado = eliminarDetalle.ArticuloId;
+        TrabajoDetalle.Cantidad = eliminarDetalle.Cantidad;
+        TrabajoDetalle.Precio = eliminarDetalle.Precio;
+
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RegistroTecnicos.DAL;
 
@@ -10,9 +11,11 @@ using RegistroTecnicos.DAL;
 namespace RegistroTecnicos.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20241017013401_Actualizacion1")]
+    partial class Actualizacion1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
@@ -23,8 +26,8 @@ namespace RegistroTecnicos.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("Costo")
-                        .HasColumnType("TEXT");
+                    b.Property<double>("Costo")
+                        .HasColumnType("REAL");
 
                     b.Property<string>("Descripcion")
                         .HasColumnType("TEXT");
@@ -32,8 +35,8 @@ namespace RegistroTecnicos.Migrations
                     b.Property<int>("Existencia")
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("Precio")
-                        .HasColumnType("TEXT");
+                    b.Property<double>("Precio")
+                        .HasColumnType("REAL");
 
                     b.HasKey("ArticuloId");
 
@@ -43,42 +46,42 @@ namespace RegistroTecnicos.Migrations
                         new
                         {
                             ArticuloId = 1,
-                            Costo = 350m,
+                            Costo = 350.0,
                             Descripcion = "Pasta termica",
                             Existencia = 10,
-                            Precio = 400m
+                            Precio = 400.0
                         },
                         new
                         {
                             ArticuloId = 2,
-                            Costo = 800m,
+                            Costo = 800.0,
                             Descripcion = "HDD SEAGATE 250GB",
                             Existencia = 5,
-                            Precio = 970m
+                            Precio = 970.0
                         },
                         new
                         {
                             ArticuloId = 3,
-                            Costo = 600m,
+                            Costo = 600.0,
                             Descripcion = "Memoria RAM 2 GB DDR3",
                             Existencia = 15,
-                            Precio = 850m
+                            Precio = 850.0
                         },
                         new
                         {
                             ArticuloId = 4,
-                            Costo = 750m,
+                            Costo = 750.0,
                             Descripcion = "Tarjeta de sonido Sound blaster 5/RX",
                             Existencia = 4,
-                            Precio = 1200m
+                            Precio = 1200.0
                         },
                         new
                         {
                             ArticuloId = 5,
-                            Costo = 80m,
+                            Costo = 80.0,
                             Descripcion = "Cable SATA de datos",
                             Existencia = 30,
-                            Precio = 100m
+                            Precio = 100.0
                         });
                 });
 
@@ -229,34 +232,18 @@ namespace RegistroTecnicos.Migrations
                     b.Property<int>("Cantidad")
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("Costo")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Costo")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("Precio")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Precio")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("TrabajoId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("DetalleId");
 
-                    b.HasIndex("TrabajoId");
-
                     b.ToTable("trabajosDetalles");
-                });
-
-            modelBuilder.Entity("RegistroTecnicos.Models.TrabajosDetalle", b =>
-                {
-                    b.HasOne("RegistroTecnicos.Models.Trabajos", null)
-                        .WithMany("trabajosDetalle")
-                        .HasForeignKey("TrabajoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("RegistroTecnicos.Models.Trabajos", b =>
-                {
-                    b.Navigation("trabajosDetalle");
                 });
 #pragma warning restore 612, 618
         }

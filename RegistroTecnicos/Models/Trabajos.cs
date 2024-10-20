@@ -16,4 +16,6 @@ public class Trabajos
     public string Descripcion { get; set; }
     [Required(ErrorMessage = "El campo monto es necesario..")]
     public decimal Monto { get; set; }
+    [ForeignKey("TrabajoId")]
+    public List<TrabajosDetalle> trabajosDetalle { get; set; } = new List<TrabajosDetalle>();
 }

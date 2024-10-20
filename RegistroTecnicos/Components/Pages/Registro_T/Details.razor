@@ -51,11 +51,13 @@ else
     public int TrabajoId { get; set; }
     public Trabajos? Trabajo { get; set; } = new Trabajos();
     public Clientes? Cliente { get; set; } = new Clientes();
+    public List<TrabajosDetalle> Lista_TrabajoDetalles { get; set; } = new List<TrabajosDetalle>();
 
     protected override async Task OnInitializedAsync()
     {
         Trabajo = await trabajoService.Buscar(TrabajoId);
         Cliente = await clienteService.Buscar(Trabajo.ClienteId);
+        Lista_TrabajoDetalles = await trabajoService.BuscarDetalle(TrabajoId);
     }
 
     public void Volver()
