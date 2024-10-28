@@ -12,13 +12,13 @@ builder.Services.AddRazorComponents()
 
 var ConStr = builder.Configuration.GetConnectionString("ConStr");
 
-
-builder.Services.AddDbContext<Context>(Options => Options.UseSqlite(ConStr));
+builder.Services.AddDbContextFactory<Context>(Options => Options.UseSqlServer(ConStr)); 
 builder.Services.AddScoped<TecnicoServices>();
 builder.Services.AddScoped<TiposTecnicoServices>();
 builder.Services.AddScoped<ClienteServices>();
 builder.Services.AddScoped<TrabajoServices>();
 builder.Services.AddScoped<PrioridadesServices>();
+builder.Services.AddScoped<CotizacionServices>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

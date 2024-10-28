@@ -1,0 +1,101 @@
+﻿@page "/Cotizaciones/Delete"
+@page "/Cotizaciones/Delete/{CotizacionId:int}"
+@inject TrabajoServices trabajoService
+@inject CotizacionServices cotizacionService
+@inject NavigationManager navigationManager
+
+@rendermode InteractiveServer
+
+<PageTitle>Eliminar cotizaci&oacute;n</PageTitle>
+
+@if (cotizaciones != null)
+{
+    <div class="container">
+        <div class="card shadow-header">
+            <!-- Header -->
+            <div class="card-header  bg-primary text-white text-center py-2 rounded">
+                <h3><strong>Eliminar cotizacion</strong></h3>
+            </div>
+            <div class="card-header">
+                <h3 class="text-danger">¿Seguro de que quieres eliminar esta cotizaci&oacute;n?</h3>
+            </div>
+            <!-- Body -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card shadow-lg">
+                            <div class="card-header">
+                                <h3 class="text-center"><strong>Datos de la cotizaci&oacute;n</strong></h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="border-primary border-2 borde">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <ul class="list-unstyled">
+                                                    <li><strong>CotizaccionId:</strong> @cotizaciones.CotizacionId</li>
+                                                    <li><strong>Fecha:</strong> @cotizaciones.Fecha</li>
+                                                    <li><strong>ClienteId:</strong> @cotizaciones.ClienteId</li>
+                                                    <li><strong>Descripcion:</strong> @cotizaciones.Observacion</li>
+                                                    <li><strong>Monto:</strong> @cotizaciones.Monto</li>
+                                                  @foreach (var detalle in Lista_CotizacionesDetalles)
+                                                    {
+                                                        <li><strong>Articulo: </strong>@detalle.Articulos.Descripcion</li>
+                                                    }
+                                                <li><strong>Monto total:</strong> @cotizaciones.Monto</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Footer -->
+            <div class="card-footer">
+                <button type="button" class="btn btn-outline-danger" @onclick="EliminarTrabajo"><i class="bi bi-trash-fill"></i> Eliminar</button>
+                <button type="button" class="btn btn-outline-primary" @onclick="Volver"><i class="bi bi-box-arrow-left"></i> Volver</button>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p>No se halló el trabajo.</p>
+}
+
+@code {
+    [Parameter]
+    public int CotizacionId { get; set; }
+    public Cotizaciones? cotizaciones { get; set; } = new Cotizaciones();
+    public List<CotizacionesDetalle> Lista_CotizacionesDetalles { get; set; } = new List<CotizacionesDetalle>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (CotizacionId != 0)
+        {
+            cotizaciones = await cotizacionService.Buscar(CotizacionId);
+            Lista_CotizacionesDetalles = await cotizacionService.BuscarTrabajoDetalle(CotizacionId);
+        }
+    }
+
+    public async Task EliminarTrabajo()
+    {
+        if (CotizacionId == 0 || cotizaciones == null)
+        {
+            return;
+        }
+
+        if (await cotizacionService.Eliminar(CotizacionId))
+        {
+            Volver();
+        }
+    }
+
+    public void Volver()
+    {
+        navigationManager.NavigateTo("/Cotizaciones/Index");
+    }
+}

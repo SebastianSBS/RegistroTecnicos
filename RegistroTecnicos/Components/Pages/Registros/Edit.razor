@@ -70,7 +70,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Lista_TipoTecnicos = await tipoTecnicoService.ObtenerTipoTecnicos();
+        Lista_TipoTecnicos = await tipoTecnicoService.GetTipoTecnicos();
 
         if (tecnicoId.HasValue)
         {

@@ -10,18 +10,22 @@ public class Context : DbContext
         : base(options) { }
 
     public DbSet<Tecnicos> Tecnicos { get; set; }
-
     public DbSet<TiposTecnicos> TiposTecnicos { get; set; }
 
     public DbSet<Clientes> Clientes { get; set; }
 
     public DbSet<Trabajos> Trabajos { get; set; }
 
-    public DbSet<Prioridades> Priodades { get; set; }
+    public DbSet<Prioridades> Prioridades { get; set; }
 
     public DbSet<Articulos> Articulos { get; set; }
 
     public DbSet<TrabajosDetalle> trabajosDetalles { get; set; }
+
+    public DbSet<Cotizaciones> Cotizaciones { get; set; }
+
+    public DbSet<CotizacionesDetalle> cotizacionesDetalle { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -16,5 +16,5 @@ public class Trabajos
     public string Descripcion { get; set; }
     [Required(ErrorMessage = "El campo monto es necesario..")]
     public decimal Monto { get; set; }
-    public ICollection<TrabajosDetalle> trabajosDetalle { get; set; }
+    public ICollection<TrabajosDetalle> trabajosDetalle { get; set; } = new List<TrabajosDetalle>();
 }

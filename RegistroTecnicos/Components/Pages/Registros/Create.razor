@@ -35,7 +35,7 @@
             <div class="mb-3">
                 <label for="TipoTecnicoId" class="form-label">Tipo de Técnico:</label>
                 <InputSelect @bind-Value="Tecnico.TipoTecnicoId" class="form-select">
-                    <option value="" disabled>Seleccione un tipo</option>
+                    <option value="0" disabled>Seleccione un tipo</option>
                     @foreach (var tipo in TiposTecnicos)
                     {
                         <option value="@tipo.TipoTecnicoId">@tipo.Descripcion</option>
@@ -74,7 +74,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        TiposTecnicos = await tiposTecnicoService.ObtenerTipoTecnicos();
+        TiposTecnicos = await tiposTecnicoService.GetTipoTecnicos();
 
         if (TipoTecnicoId.HasValue)
         {
